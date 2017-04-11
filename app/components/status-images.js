@@ -2,64 +2,46 @@ import Ember from 'ember';
 import Config from 'travis/config/environment';
 
 const { service } = Ember.inject;
-const { alias } = Ember.computed;
 
 export default Ember.Component.extend({
-  popup: service(),
   auth: service(),
   externalLinks: service(),
   statusImages: service(),
 
-  popupName: alias('popup.popupName'),
-
-  id: 'status-images',
-  attributeBindings: ['id'],
   classNames: ['popup', 'status-images'],
   formats: ['Image URL', 'Markdown', 'Textile', 'Rdoc', 'AsciiDoc', 'RST', 'Pod', 'CCTray'],
 
-  branches: Ember.computed('popupName', 'repo', function () {
-    let repoId = this.get('repo.id'),
-      popupName = this.get('popupName');
+  branches: Ember.computed('repo', function () {
+    let repoId = this.get('repo.id');
 
-    if (popupName === 'status-images') {
-      let array = Ember.ArrayProxy.create({ content: [] }),
-        apiEndpoint = Config.apiEndpoint,
-        options = {
-          headers: {
-            'Travis-API-Version': '3'
-          }
-        };
+    let array = Ember.ArrayProxy.create({ content: [] }),
+      apiEndpoint = Config.apiEndpoint,
+      options = {
+        headers: {
+          'Travis-API-Version': '3'
+        }
+      };
 
-      array.set('isLoaded', false);
+    array.set('isLoaded', false);
 
-      if (this.get('auth.signedIn')) {
-        options.headers.Authorization = `token ${this.auth.token()}`;
+    if (this.get('auth.signedIn')) {
+      options.headers.Authorization = `token ${this.auth.token()}`;
+    }
+
+    let url = `${apiEndpoint}/repo/${repoId}/branches?limit=100`;
+    Ember.$.ajax(url, options).then(response => {
+      if (response.branches.length) {
+        let branchNames = response.branches.map(branch => branch.name);
+        array.pushObjects(branchNames);
+      } else {
+        array.pushObject('master');
       }
 
-      let url = `${apiEndpoint}/repo/${repoId}/branches?limit=100`;
-      Ember.$.ajax(url, options).then(response => {
-        if (response.branches.length) {
-          let branchNames = response.branches.map(branch => branch.name);
-          array.pushObjects(branchNames);
-        } else {
-          array.pushObject('master');
-        }
+      array.set('isLoaded', true);
+    });
 
-        array.set('isLoaded', true);
-      });
-
-      return array;
-    } else {
-      // if status images popup is not open, don't fetch any branches
-      return [];
-    }
+    return array;
   }),
-
-  actions: {
-    close() {
-      return this.get('popup').close();
-    }
-  },
 
   statusString: Ember.computed('format', 'repo.slug', 'branch', function () {
     const format = this.get('format') || this.get('formats.firstObject');
@@ -86,6 +68,12 @@ export default Ember.Component.extend({
         return this.get('statusImages').podImageString(slug, branch);
       case 'CCTray':
         return this.get('statusImages').ccXml(slug, branch);
+    }
+  },
+
+  actions: {
+    toggleStatusImageModal() {
+      this.get('onClose')();
     }
   }
 });

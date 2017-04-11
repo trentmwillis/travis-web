@@ -60,6 +60,7 @@
     "ember-inline-svg": "0.1.11",
     "ember-keyboard-shortcuts": "0.3.0",
     "ember-load-initializers": "1.0.0",
+    "ember-modal-dialog": "^2.2.0",
     "ember-percy": "1.2.12",
     "ember-prism": "0.1.0",
     "ember-qunit-nice-errors": "1.1.2",

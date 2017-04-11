@@ -34,5 +34,11 @@ export default Ember.Component.extend({
 
   displayStatusImages: Ember.computed('permissions.all', 'repo', function () {
     return this.get('permissions').hasPermission(this.get('repo'));
-  })
+  }),
+
+  actions: {
+    triggerBuildModal() {
+      this.get('onTriggerBuild')();
+    }
+  }
 });

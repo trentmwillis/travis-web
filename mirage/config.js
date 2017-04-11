@@ -321,6 +321,33 @@ export default function () {
     return this.serialize(builds, 'build');
   });
 
+  this.post('/repo/:repo_id/requests', function (schema, request) {
+    const requestBody = JSON.parse(request.requestBody);
+    const fakeRequestId = 5678;
+
+    return new Mirage.Response(200, {}, {
+      request: {
+        id: fakeRequestId,
+        message: requestBody.request.message,
+        branch: requestBody.request.branch,
+        config: requestBody.request.config
+      },
+      resource_type: 'request'
+    });
+  });
+
+  this.get('/repo/:repo_id/request/:request_id', function (schema, request) {
+    return new Mirage.Response(200, {}, {
+      id: request.params.request_id,
+      result: 'approved',
+      builds: [{
+        state: 'created',
+        id: 9999,
+        number: '2'
+      }]
+    });
+  });
+
   this.get('/jobs/:id/log', function (schema, request) {
     let log = schema.logs.find(request.params.id);
     if (log) {

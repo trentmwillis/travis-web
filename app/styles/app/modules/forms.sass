@@ -20,6 +20,14 @@ select
 textarea
   @extend %input-base
 
+.form-error
+  label,
+  .form-helptext
+    color: $brick-red
+  textarea,
+  input
+    border-color: $brick-red
+
 .form-label
   font-size: 10px
   color: $cement-grey
@@ -37,6 +45,11 @@ textarea
   cursor: pointer
   &:hover
     background-color: $oxide-blue
+
+.form-helptext
+  margin-top: 0
+  font-size: 12px
+  color: $cement-grey
 
 .form--sshkey
   .form-elem

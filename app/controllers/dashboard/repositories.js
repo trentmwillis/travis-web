@@ -95,9 +95,8 @@ export default Ember.Controller.extend({
         if (a.get('currentBuild.finishedAt') === b.get('currentBuild.finishedAt')) {
           return 0;
         }
-        if (Ember.isBlank(a.get('defaultBranch.lastBuild.state'))) {
+        if (Ember.isBlank(a.get('defaultBranch.lastBuild.state')))
           return 1;
-        }
         if (Ember.isBlank(b.get('defaultBranch.lastBuild.state'))) {
           return -1;
         }
