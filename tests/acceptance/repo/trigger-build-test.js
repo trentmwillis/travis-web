@@ -58,7 +58,6 @@ test('triggering a custom build via the dropdown', function (assert) {
   triggerBuildPage.triggerConfigValidation();
 
   andThen(() => {
-    percySnapshot(assert);
     assert.ok(triggerBuildPage.submitButtonInactive, 'invalid config deactivates submit');
   });
 
