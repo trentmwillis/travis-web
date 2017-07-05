@@ -12,7 +12,7 @@
           {{repos-empty}}
         {{else}}
           {{#if repo.isLoaded}}
-            {{#repository-layout repo=repo build=build job=job tab=tab}}
+            {{#repository-layout repo=repo build=build job=job tab=tab onTriggerBuild=(action "toggleTriggerBuildModal") onStatusBadge=(action "toggleStatusBadgeModal")}}
               {{outlet}}
             {{/repository-layout}}
           {{/if}}

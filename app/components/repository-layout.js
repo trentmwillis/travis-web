@@ -20,7 +20,7 @@ export default Ember.Component.extend({
 
   actions: {
     statusImages() {
-      this.get('popup').open('status-images');
+      this.get('onStatusBadge')();
       return false;
     }
   },
