@@ -77,8 +77,6 @@ export default Ember.Component.extend({
                   } else { // pending etc
                     this.set('afterTriggerStatus', 'Your request was not ready yet.');
                   }
-
-                  Ember.run.later(this, this.get('onClose'), 3000);
                 });
             }, 2000);
           });

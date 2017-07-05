@@ -23,7 +23,7 @@
 </div>
 
 {{#if afterTriggerStatus}}
-  <p class="notice-banner--blue">{{afterTriggerStatus}}
+  <p class="notice-banner--blue" {{action 'toggleTriggerBuildModal'}}>{{afterTriggerStatus}}
   {{#if triggeredBuildId}}
     <br>{{#link-to 'build' triggeredBuildId}}See your triggered build here{{/link-to}}
   {{/if}}
